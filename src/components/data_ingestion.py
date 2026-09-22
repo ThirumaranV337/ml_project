@@ -7,6 +7,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
+
 
 """
 In this DataIngestionConfig we config the input data .And the decarator dataclass us used to replacement of init the constructor,used oly for the intializing the variable 
@@ -49,4 +53,7 @@ class DataIngestion:
 
 if __name__=="__main__":
     object=DataIngestion()
-    object.initiate_data_ingestion()
+    train_data,test_data=object.initiate_data_ingestion()
+
+    data_transformation=DataTransformation()
+    data_transformation.initiate_data_transformation(train_data,test_data)
