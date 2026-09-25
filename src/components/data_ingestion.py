@@ -1,3 +1,8 @@
+"""
+This is the data ingestion file it deals with the data handeling dueing the phase 
+of trainuing and storing the data by accessing the respective data source 
+"""
+
 import os 
 import sys
 from src.exception import CustomException
@@ -9,6 +14,9 @@ from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
 
 
 
@@ -38,6 +46,7 @@ class DataIngestion:
             logging.info("Train test split initiated")
 
             train_set,test_set=train_test_split(df,test_size=0.2,random_state=42)
+            ##here by using the train and the test data we accessing the to_csv method and then storing in the artifacts folder 
 
             test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
             train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
@@ -56,4 +65,6 @@ if __name__=="__main__":
     train_data,test_data=object.initiate_data_ingestion()
 
     data_transformation=DataTransformation()
-    data_transformation.initiate_data_transformation(train_data,test_data)
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+    modeltrainer=ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
